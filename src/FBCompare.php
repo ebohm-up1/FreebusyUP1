@@ -71,7 +71,7 @@ class FBCompare
         $arr_creneaux = array();
 
         foreach ($creneauxGenerated as $creneau) {
-            if ($this->_testPeriodsDebug($busySeq, $creneau) === false) {
+            if ($this->_testGenPeriodVSBusySequence($busySeq, $creneau)) {
                 $arr_creneaux[] = $creneau;
             }
         }
@@ -82,37 +82,23 @@ class FBCompare
     }
 
     /**
-     * Méthode de comparaison entre les créneaux générés et les créneaux busys
+     * Méthode de comparaison entre une période générée et la séquence des busys
      *
-     * Cette méthode renvoie Vrai si sur les créneaux générés, certains chevauchent 
-     * ou correspondent à des créneaux renvoyés busy par l'api de l'utilisateur
+     * Cette méthode parcours la séquence des busys pour vérifier que le créneau
+     * généré est bien libre, c'est à dire qu'aucune période busy est pendant celui-ci (isDuring)
+     * ou qu'il se chevauche (overlaps)
      *
      * @param Sequence $sequence
      * @param Period $periodToCompare
      * @return boolean
      */
-    private function _testPeriodsDebug(Sequence $sequence, Period $periodToCompare) : bool
+    private function _testGenPeriodVSBusySequence(Sequence $sequence, Period $periodToCompare) : bool
     {
         foreach ($sequence as $period) {
-            $isDuring = $period->isDuring($periodToCompare);
-            if ($isDuring) return true;
-
-            $overlaps = $period->overlaps($periodToCompare);
-            if ($overlaps) return true;
-
-            $contains = $period->contains($periodToCompare);
-            if ($contains) return true;
-
-            $pIsDuring = $periodToCompare->isDuring($period);
-            if ($pIsDuring) return true;
-
-            $pOverlaps = $periodToCompare->overlaps($period);
-            if ($pOverlaps) return true;
-
-            $pContains = $periodToCompare->contains($period);
-            if ($pContains) return true;
+            if ($period->isDuring($periodToCompare)) return false;
+            if ($period->overlaps($periodToCompare)) return false;
         }
-        return false;
+        return true;
     }
 
     private function _mergeSequencesToArrayPeriods()

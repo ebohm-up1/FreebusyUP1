@@ -36,5 +36,23 @@ La configuration se fait en créant un fichier .env sur la base du fichier .env.
 URL_FREEBUSY : url api récupération du calendrier.
 
 
+Tests Phpunit
+
+Des tests phpunit pour éviter des régréssions sont faits.
+
+Pour le moment, la classe testée est FBCompare
+
+Ceux-ci se trouvent dans le répertoire tests/FBCompareTest-ID/
+
+Une variable d'environnement doit être initialisée pour choisir le numéro du test
+
+Exemple commande pour choisir le test 1:
+FBCompareTestId=1 vendor/bin/phpunit tests/FBCompareTest.php
+
+Les données de test sont sous forme de json, ce sont des données serialisées, il y'a 3 fichiers qui correspondent aux classes instanciées:
+stdenv.json : stdClass stdEnv
+fbparams.json : class FBParams
+fbform.json : class FBForm
+
 
 Ce projet est sous licence Apache 2.
