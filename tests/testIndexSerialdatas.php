@@ -18,13 +18,13 @@ use RechercheCreneaux\FBInvite;
 use RechercheCreneaux\FBCompare;
 use RechercheCreneaux\TypeInviteAction;
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 session_start();
 
-$stdEnv = unserialize(file_get_contents('tests/stdenv.json'));
+$stdEnv = unserialize(file_get_contents('FBCompareTest-1/stdenv.json'));
 
-$fbParams = unserialize(file_get_contents('tests/fbparams.json'));
+$fbParams = unserialize(file_get_contents('FBCompareTest-1/fbparams.json'));
 
 if (FBForm::validParams($fbParams)) {
     $js_uids = json_encode($fbParams->uids);
